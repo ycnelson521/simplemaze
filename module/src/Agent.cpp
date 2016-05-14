@@ -24,6 +24,7 @@ bool Agent::initialize(void) {
 	return true;
 }
 
+// Maing try logic
 bool Agent::act(Environment env) {
 	float epsilon = 0.3;
 	bool terminate = false;
@@ -92,8 +93,6 @@ bool Agent::act(Environment env) {
 		// check for termination, collision/goal/max steps reached
 		terminate = termination_check(collision_state, goal_state);
 
-		//cout << "Dumping Qstate_table @ step=" << step-1 << endl;
-		//dumpQstate_table();
 	} // endof while(!terminate)
 
 	return goal_state;
@@ -144,9 +143,6 @@ bool Agent::select_action(float epsilon)
 			}else{ // epsilon - random case
 				action = tmp_rand % 4; // max action count
 				Qstate_table.add_entry(current_state[0], current_state[1], action, 0); //check and add the new entry
-
-				if((current_state[0] == 1) && (current_state[1]==2) && (action==1))
-					cout <<"gotcha" << endl;
 			}
 		}
 	}
@@ -214,18 +210,15 @@ bool Agent::action_value_iteration_update(float learning_rate, float discount_fa
 	return true;
 }
 
+// Terminatino condition check within Agent::Act(env)
 bool Agent::termination_check(bool collision_state, bool goal_state)
 {
-//	if( collision_state)
-//		return true;
-	
 	if( goal_state)
 		return true;
 	else if( step > max_step)
 		return true;
 	else
 		return false;
-
 }
 
 bool Agent::update_state_after_action(char &state_x, char &state_y, char input_action)

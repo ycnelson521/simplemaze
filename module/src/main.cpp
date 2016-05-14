@@ -41,25 +41,5 @@ int main(void)
 		cout << endl;
 	}
 
-
-	/*
-	Environment env;
-
-	env.initialize();
-
-	bool btmp=false;
-	for(int y = -1; y<4; y++)
-		for(int x =-2; x<3; x++) {
-			cout << "(x,y)= ("<< x << "," << y << ") collsion_state=" << env.collision_check(x,y, btmp) << endl;
-		}
-	
-	cout << endl;
-	
-	for(int y = -1; y<4; y++)
-		for(int x =-2; x<3; x++) {
-			cout << "(x,y)= ("<< x << "," << y << ") goal_state=" << env.goal_check(x,y, btmp) << endl;
-		}
-	cout << endl;
-	*/
 	return 0;
 }
