@@ -15,14 +15,15 @@
 #define DEFAULT_REWARD_GOAL 50.0
 #define DEFAULT_DISCOUNT_FACTOR 0.5
 #define DEFAULT_REWARD_STEP -1.0
-#define DEFAULT_MAX_STEP 100
+#define DEFAULT_MAX_STEP 1000
 
 class Agent {
 private:
-	char initial_state[2];
-	char current_state[2];
-	char next_state[2];
-	
+	int initial_state[2];
+	int current_state[2];
+	int next_state[2];
+	int goal_pos[2];
+
 	Qstate Qstate_table;
 
 	char action;
@@ -44,7 +45,7 @@ public:
 	float learning_rate(); 
 	bool action_value_iteration_update(float learning_rate, float discount_factor);
 	bool termination_check(bool collision_state, bool goal_state);
-	bool update_state_after_action(char &state_x, char &state_y, char input_action);
+	bool update_state_after_action(int &state_x, int &state_y, char input_action);
 	bool print_best_path(Environment env); 
 	bool Agent::dumpQstate_table(void);
 };

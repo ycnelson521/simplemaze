@@ -221,7 +221,7 @@ bool Agent::termination_check(bool collision_state, bool goal_state)
 		return false;
 }
 
-bool Agent::update_state_after_action(char &state_x, char &state_y, char input_action)
+bool Agent::update_state_after_action(int &state_x, int &state_y, char input_action)
 {
 	switch(input_action)
 	{
@@ -247,7 +247,7 @@ bool Agent::update_state_after_action(char &state_x, char &state_y, char input_a
 
 bool Agent::print_best_path(Environment env)
 {
-	char tmp_state[2];
+	int tmp_state[2];
 	char tmp_action;
 	float tmp_action_value;
 	Qstate_entry tmp_entry;
@@ -261,9 +261,10 @@ bool Agent::print_best_path(Environment env)
 	
 	if(!collision_state && !goal_state)
 		return false;
+
 	Qstate_table.print();
 
-	cout << "The best path:" << endl;
+	cout << endl << "The best path:" << endl;
 	while( !tmp_collision_state && !tmp_goal_state )
 	{
 		Qstate_table.max_entry_Q(tmp_state[0], tmp_state[1], tmp_action, tmp_action_value);

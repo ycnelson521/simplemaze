@@ -21,7 +21,7 @@ bool Qstate::initialize(void)
 	return true;	
 }
 
-bool Qstate::add_entry(char x, char y, char action, float action_value)
+bool Qstate::add_entry(int x, int y, char action, float action_value)
 {
 	bool entry_exist = false;
 	vector<Qstate_entry>::iterator iter =Qstate_vector.begin();
@@ -44,7 +44,7 @@ bool Qstate::add_entry(char x, char y, char action, float action_value)
 }
 
 // return action value Q(s,a)
-bool Qstate::get_entry_Q(char x, char y, char action, float& action_value)
+bool Qstate::get_entry_Q(int x, int y, char action, float& action_value)
 {
 
 	bool entry_exist = false;
@@ -66,7 +66,7 @@ bool Qstate::get_entry_Q(char x, char y, char action, float& action_value)
 	return true;
 }
 
-bool Qstate::max_entry_Q(char x, char y, char& max_action, float& max_action_value) //return entry's max Q action and max Q
+bool Qstate::max_entry_Q(int x, int y, char& max_action, float& max_action_value) //return entry's max Q action and max Q
 {
 	bool entry_exist = false;
 	bool max_entry_found = false;
@@ -99,7 +99,7 @@ bool Qstate::max_entry_Q(char x, char y, char& max_action, float& max_action_val
 	return false;
 }
 
-bool Qstate::update_entry_Q(char x, char y, char action, float action_value)
+bool Qstate::update_entry_Q(int x, int y, char action, float action_value)
 {
 	bool entry_exist = false;
 	vector<Qstate_entry>::iterator iter =Qstate_vector.begin();
@@ -119,7 +119,7 @@ bool Qstate::update_entry_Q(char x, char y, char action, float action_value)
 	
 }
 
-bool Qstate::check_entry(char x, char y, char action)
+bool Qstate::check_entry(int x, int y, char action)
 {
 	bool entry_exist = false;
 	vector<Qstate_entry>::iterator iter =Qstate_vector.begin();
