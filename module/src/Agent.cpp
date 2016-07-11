@@ -114,12 +114,21 @@ bool Agent::select_action(void)
 	bool entry_exist;
 	bool not_all_action_tried = false;
 
+	//random seed
+	random_device rd;
+	// Initialize Mersenne Twister pseudo-random number generator
+    mt19937 gen(rd());
+	// Generate pseudo-random numbers
+    // uniformly distributed in range (1, 100)
+    uniform_int_distribution<> dis(1, 100);
+
+
 	if(!max_action_value_found)
 	{
 		//use tmp_rand as a dice event [1~100]
-		srand(time(NULL));
 
-		tmp_rand = rand() % 100 +1;
+		//generate uniformly distributed random value
+		tmp_rand = dis(gen);
 
 		epsilon_100x_threshold = (int)(epsilon * 100) +1 ;  // scale input epsilon up 100 times
 
@@ -151,7 +160,7 @@ bool Agent::select_action(void)
 		}
 	}
 	//dbg info
-	cout << "dbg: select_action: ( [" << (int)current_state[0] << ", " << (int)current_state[1] << "], " << (int)action << ")" << endl;
+	cout << "dbg: select_action: ( [" << (int)current_state[0] << ", " << (int)current_state[1] << "], " << (int)action << ")" << " " << (int)tmp_rand << endl;
 
 	return true;
 }

@@ -6,6 +6,7 @@
 #include <sstream>
 #include <time.h>
 #include <vector>
+#include <random>
 
 #include "Environment.h"
 #include "Qstate.h"
