@@ -15,7 +15,7 @@
 #define DEFAULT_REWARD_GOAL 50.0
 #define DEFAULT_DISCOUNT_FACTOR 0.5
 #define DEFAULT_REWARD_STEP -1.0
-#define DEFAULT_MAX_STEP 1000
+#define DEFAULT_MAX_STEP 20000
 
 class Agent {
 private:
@@ -35,19 +35,25 @@ private:
 	int step;
 	int max_step;
 
+	float epsilon;
+	float learning_rate;
+	float discount_factor;
+
 public:
 	Agent();
 	~Agent();
 	bool initialize(void);
 	bool act(Environment env);
-	bool select_action(float epsilon);
+	bool select_action(void);
 	bool update_next_state(void);
-	float learning_rate(); 
-	bool action_value_iteration_update(float learning_rate, float discount_factor);
+	bool set_epsilon(float);
+	bool set_learning_rate(float); 
+	bool set_discount_factor(float);
+	bool action_value_iteration_update(void);
 	bool termination_check(bool collision_state, bool goal_state);
 	bool update_state_after_action(int &state_x, int &state_y, char input_action);
 	bool print_best_path(Environment env); 
-	bool Agent::dumpQstate_table(void);
+	bool dumpQstate_table(void);
 };
 
 #endif

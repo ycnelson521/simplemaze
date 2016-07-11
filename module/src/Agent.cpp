@@ -21,12 +21,16 @@ bool Agent::initialize(void) {
 	goal_state = false;
 	Qstate_table.initialize();
 
+	epsilon = 1.0; //default epsilon is 1, 100% chance of random exploration
+	learning_rate = DEFAULT_LEARNING_RATE;
+	discount_factor = DEFAULT_DISCOUNT_FACTOR;
+
 	return true;
 }
 
 // Maing try logic
 bool Agent::act(Environment env) {
-	float epsilon = 0.3;
+	
 	bool terminate = false;
 	
 	goal_state = false;
@@ -51,7 +55,7 @@ bool Agent::act(Environment env) {
 		// epsilon-greedy-selection
 		// select the action with highest Q(s,a) value under (1-epsilon) probability
 		// this->action is updated
-		select_action(epsilon);
+		select_action();
 
 		// update the next state after action a (s, a) -> s'
 		//this->next_state is updated based on this->action
@@ -79,7 +83,7 @@ bool Agent::act(Environment env) {
 
 
 		// update Q(s,a)
-		action_value_iteration_update(DEFAULT_LEARNING_RATE, DEFAULT_DISCOUNT_FACTOR);
+		action_value_iteration_update();
 
 		// step increment
 		step++;
@@ -98,7 +102,7 @@ bool Agent::act(Environment env) {
 	return goal_state;
 }
 
-bool Agent::select_action(float epsilon)
+bool Agent::select_action(void)
 {
 	float max_action_value;
 	bool max_action_value_found=false;
@@ -176,12 +180,26 @@ bool Agent::update_next_state()
 	return true;
 }
 
-float Agent::learning_rate()
+bool Agent::set_epsilon(float value)
 {
-	return DEFAULT_LEARNING_RATE;
+	epsilon = value;
+	return true;
 }
 
-bool Agent::action_value_iteration_update(float learning_rate, float discount_factor)
+bool Agent::set_learning_rate(float value)
+{
+	learning_rate = value;
+	return true;
+}
+
+bool Agent::set_discount_factor(float value)
+{
+	discount_factor = value;
+	return true;
+}
+
+
+bool Agent::action_value_iteration_update(void)
 {
 	float old_action_value;
 	float new_action_value;

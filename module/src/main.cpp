@@ -6,12 +6,12 @@
 
 using namespace std;
 
-#define DEFAULT_NUM_EPISODE 20
+#define DEFAULT_NUM_EPISODE 120
 
 int main(void)
 {
 
-	char maze_file[20] = "SimpleMaze5x5.txt";
+	char maze_file[30] = "SimpleMaze15x15.txt";
 
 	Environment env;
 	
