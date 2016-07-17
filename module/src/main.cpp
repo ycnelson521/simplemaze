@@ -7,6 +7,11 @@
 using namespace std;
 
 #define DEFAULT_NUM_EPISODE 120
+#define EXPLORE_NUM_EPISODE 20
+#define EPS_80_NUM_EPISODE 10
+#define EPS_60_NUM_EPISODE 10
+#define EPS_40_NUM_EPISODE 10
+#define EPS_20_NUM_EPISODE 10
 
 int main(void)
 {
@@ -30,7 +35,7 @@ int main(void)
 	cout << "Start learning... " << endl;
 
 	bool goal_state = false;
-	for(int episode = 0; episode < DEFAULT_NUM_EPISODE; episode++)
+	for(int episode = 0; episode < EXPLORE_NUM_EPISODE; episode++)
 	{
 		cout << "Start episode = " << episode << " ----" << endl;
 		goal_state = agent.act(env);
@@ -41,6 +46,49 @@ int main(void)
 		cout << "End episode =  " << episode << "----" << endl;
 	}
 
+	for(int episode = EXPLORE_NUM_EPISODE; episode < EXPLORE_NUM_EPISODE+EPS_80_NUM_EPISODE; episode++)
+	{
+		cout << "Start episode = " << episode << " ----" << endl;
+		goal_state = agent.act(env);
+
+		cout << "Dumping Qstate_table @ episode = " << episode << ":" << endl;
+		agent.dumpQstate_table();
+		
+		cout << "End episode =  " << episode << "----" << endl;
+	}
+
+	for(int episode = EXPLORE_NUM_EPISODE+EPS_80_NUM_EPISODE; episode < EXPLORE_NUM_EPISODE+EPS_80_NUM_EPISODE+EPS_60_NUM_EPISODE; episode++)
+	{
+		cout << "Start episode = " << episode << " ----" << endl;
+		goal_state = agent.act(env);
+
+		cout << "Dumping Qstate_table @ episode = " << episode << ":" << endl;
+		agent.dumpQstate_table();
+		
+		cout << "End episode =  " << episode << "----" << endl;
+	}
+
+	for(int episode = EXPLORE_NUM_EPISODE+EPS_80_NUM_EPISODE+EPS_60_NUM_EPISODE; episode < EXPLORE_NUM_EPISODE+EPS_80_NUM_EPISODE+EPS_60_NUM_EPISODE+EPS_40_NUM_EPISODE; episode++)
+	{
+		cout << "Start episode = " << episode << " ----" << endl;
+		goal_state = agent.act(env);
+
+		cout << "Dumping Qstate_table @ episode = " << episode << ":" << endl;
+		agent.dumpQstate_table();
+		
+		cout << "End episode =  " << episode << "----" << endl;
+	}
+
+	for(int episode = EXPLORE_NUM_EPISODE+EPS_80_NUM_EPISODE+EPS_60_NUM_EPISODE+EPS_40_NUM_EPISODE; episode < EXPLORE_NUM_EPISODE+EPS_80_NUM_EPISODE+EPS_60_NUM_EPISODE+EPS_40_NUM_EPISODE+EPS_20_NUM_EPISODE; episode++)
+	{
+		cout << "Start episode = " << episode << " ----" << endl;
+		goal_state = agent.act(env);
+
+		cout << "Dumping Qstate_table @ episode = " << episode << ":" << endl;
+		agent.dumpQstate_table();
+		
+		cout << "End episode =  " << episode << "----" << endl;
+	}
 	cout << endl << "Printing the final best path :" << endl;
 	agent.print_best_path(env);
 	cout << endl;

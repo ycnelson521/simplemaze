@@ -21,7 +21,7 @@ bool Agent::initialize(void) {
 	goal_state = false;
 	Qstate_table.initialize();
 
-	epsilon = 1.0; //default epsilon is 1, 100% chance of random exploration
+	epsilon = 0.9; //default epsilon is 1, 100% chance of random exploration
 	learning_rate = DEFAULT_LEARNING_RATE;
 	discount_factor = DEFAULT_DISCOUNT_FACTOR;
 
