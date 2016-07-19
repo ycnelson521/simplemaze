@@ -7,11 +7,11 @@
 using namespace std;
 
 #define DEFAULT_NUM_EPISODE 120
-#define EXPLORE_NUM_EPISODE 20
-#define EPS_80_NUM_EPISODE 10
-#define EPS_60_NUM_EPISODE 10
-#define EPS_40_NUM_EPISODE 10
-#define EPS_20_NUM_EPISODE 10
+#define EXPLORE_NUM_EPISODE 100
+#define EPS_80_NUM_EPISODE 80
+#define EPS_60_NUM_EPISODE 60
+#define EPS_40_NUM_EPISODE 30
+#define EPS_20_NUM_EPISODE 20
 
 int main(void)
 {

@@ -160,7 +160,7 @@ bool Agent::select_action(void)
 		}
 	}
 	//dbg info
-	cout << "dbg: select_action: ( [" << (int)current_state[0] << ", " << (int)current_state[1] << "], " << (int)action << ")" << " " << (int)tmp_rand << endl;
+//	cout << "dbg: select_action: ( [" << (int)current_state[0] << ", " << (int)current_state[1] << "], " << (int)action << ")" << " " << (int)tmp_rand << endl;
 
 	return true;
 }
@@ -216,6 +216,9 @@ bool Agent::action_value_iteration_update(void)
 	float learned_value;
 	float estimated_optimal_future_value;
 	char next_state_max_action;
+
+//	if(current_state[0]==4 && current_state[1]==11 && action ==2)
+//		cout << "dbg: 4, 11, 2" << endl;
 	
 	Qstate_table.get_entry_Q(current_state[0], current_state[1], action, old_action_value);
 
@@ -226,11 +229,11 @@ bool Agent::action_value_iteration_update(void)
 	new_action_value = old_action_value + learning_rate * (learned_value - old_action_value);
 
 	//dbg
-	cout << "dbg: action_value_update: old_action_value=" << old_action_value << 
+/*	cout << "dbg: action_value_update: old_action_value=" << old_action_value << 
 		", est_optimal_future_value=" << estimated_optimal_future_value <<
 		", learned_value=" << learned_value <<
 		", new_action_value =" << new_action_value << endl;
-
+*/
 	//update new action value
 	Qstate_table.update_entry_Q(current_state[0], current_state[1], action, new_action_value);
 	
