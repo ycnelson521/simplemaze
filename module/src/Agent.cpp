@@ -11,11 +11,13 @@ Agent::~Agent(){
 
 //intialize the maze
 bool Agent::initialize(void) {
-	initial_state[0] = 0;
-	initial_state[1] = 0;
+	//initial_state[0] = 0;
+	//initial_state[1] = 0;
+	initial_state.set(0, 0);
 
-	current_state[0] = initial_state[0];
-	current_state[1] = initial_state[1];
+	//current_state[0] = initial_state[0];
+	//current_state[1] = initial_state[1];
+	current_state.set(initial_state.get_x(), initial_state.get_y() );
 
 	collision_state = false;
 	goal_state = false;
@@ -28,7 +30,7 @@ bool Agent::initialize(void) {
 	return true;
 }
 
-// Maing try logic
+// Main try logic
 bool Agent::act(Environment env) {
 	
 	bool terminate = false;
@@ -39,13 +41,15 @@ bool Agent::act(Environment env) {
 
 	//reset state before trial run
 	// don't touch Qstate_table
-	current_state[0] = initial_state[0];
-	current_state[1] = initial_state[1];
+	//current_state[0] = initial_state[0];
+	//current_state[1] = initial_state[1];
+	current_state.set(initial_state.get_x(), initial_state.get_y() );
+
 	collision_state = false;
 	goal_state = false;
 
 	// start trial run
-	Qstate_table.add_entry(current_state[0], current_state[1],0, 0);
+	Qstate_table.add_entry(current_state, 0, 0);
 
 	while(!terminate) {
 	
@@ -64,19 +68,19 @@ bool Agent::act(Environment env) {
 
 		// check collision_state and goal_state
 		// this->collision_state and this->goal_state are updated based on this->next_state from env;
-		env.collision_check(next_state[0], next_state[1], collision_state);
-		env.goal_check(next_state[0], next_state[1], goal_state);
+		env.collision_check(next_state.get_x(), next_state.get_y(), collision_state);
+		env.goal_check(next_state.get_x(), next_state.get_y(), goal_state);
 
 		// compute immediate reward
 		if( collision_state ) {
 			reward = DEFAULT_REWARD_COLLISION;
-			Qstate_table.add_entry(next_state[0], next_state[1], 0, -50);
+			Qstate_table.add_entry(next_state, 0, -50);
 		}else if( goal_state ) {
 			reward = DEFAULT_REWARD_GOAL;
-			Qstate_table.add_entry(next_state[0], next_state[1], 0, 50);
+			Qstate_table.add_entry(next_state, 0, 50);
 		}else{
 			reward = DEFAULT_REWARD_STEP;
-			Qstate_table.add_entry(next_state[0], next_state[1], 0, 0);
+			Qstate_table.add_entry(next_state, 0, 0);
 		}
 
 		
@@ -90,8 +94,9 @@ bool Agent::act(Environment env) {
 
 		// update current_state with next_state if no collision happened
 		if(!collision_state) {
-			current_state[0] = next_state[0];
-			current_state[1] = next_state[1];
+			current_state.set( next_state.get_x(), next_state.get_y() );
+			//current_state[0] = next_state[0];
+			//current_state[1] = next_state[1];
 		}
 
 		// check for termination, collision/goal/max steps reached
@@ -134,7 +139,7 @@ bool Agent::select_action(void)
 
 		not_all_action_tried = false;
 		for(chk_action = 0; chk_action<4; chk_action++) {
-			entry_exist = Qstate_table.check_entry(current_state[0], current_state[1],chk_action);
+			entry_exist = Qstate_table.check_entry(current_state, chk_action);
 			if(!entry_exist) {
 				not_all_action_tried = true;
 				break;
@@ -144,23 +149,23 @@ bool Agent::select_action(void)
 		if(not_all_action_tried) {
 			for(chk_action = 0; chk_action<4; chk_action++) {
 				action = tmp_rand % 4; // max action count
-				entry_exist = Qstate_table.check_entry(current_state[0], current_state[1], action);
+				entry_exist = Qstate_table.check_entry(current_state, action);
 				if(!entry_exist)
 					break;
 			}
-			Qstate_table.add_entry(current_state[0], current_state[1], action, 0); //check and add the new entry
+			Qstate_table.add_entry(current_state, action, 0); //check and add the new entry
 		}else{ // all action tried
 
 			if(tmp_rand > epsilon_100x_threshold) { // 1-epsilon - best case
-				max_action_value_found = Qstate_table.max_entry_Q(current_state[0], current_state[1], action, max_action_value);
+				max_action_value_found = Qstate_table.max_entry_Q(current_state, action, max_action_value);
 			}else{ // epsilon - random case
 				action = tmp_rand % 4; // max action count
-				Qstate_table.add_entry(current_state[0], current_state[1], action, 0); //check and add the new entry
+				Qstate_table.add_entry(current_state, action, 0); //check and add the new entry
 			}
 		}
 	}
 	//dbg info
-//	cout << "dbg: select_action: ( [" << (int)current_state[0] << ", " << (int)current_state[1] << "], " << (int)action << ")" << " " << (int)tmp_rand << endl;
+	//cout << "dbg: select_action: ( [" << current_state.get_x() << ", " << current_state.get_y() << "], " << (int)action << ")" << " " << (int)tmp_rand << endl;
 
 	return true;
 }
@@ -170,20 +175,24 @@ bool Agent::update_next_state()
 	switch(action)
 	{
 		case 0: //forward
-			next_state[0] = current_state[0];
-			next_state[1] = current_state[1] + 1;
+			//next_state[0] = current_state[0];
+			//next_state[1] = current_state[1] + 1;
+			next_state.set( current_state.get_x(), current_state.get_y() + 1 );
 			break;
 		case 1: // left
-			next_state[0] = current_state[0] - 1;
-			next_state[1] = current_state[1];
+			//next_state[0] = current_state[0] - 1;
+			//next_state[1] = current_state[1];
+			next_state.set( current_state.get_x() - 1, current_state.get_y() );
 			break;
 		case 2: // right
-			next_state[0] = current_state[0] + 1;
-			next_state[1] = current_state[1];
+			//next_state[0] = current_state[0] + 1;
+			//next_state[1] = current_state[1];
+			next_state.set( current_state.get_x() + 1, current_state.get_y() );
 			break;
 		case 3: //back
-			next_state[0] = current_state[0];
-			next_state[1] = current_state[1] - 1;
+			//next_state[0] = current_state[0];
+			//next_state[1] = current_state[1] - 1;
+			next_state.set( current_state.get_x(), current_state.get_y() - 1 );
 			break;
 	}
 	return true;
@@ -217,12 +226,12 @@ bool Agent::action_value_iteration_update(void)
 	float estimated_optimal_future_value;
 	char next_state_max_action;
 
-//	if(current_state[0]==4 && current_state[1]==11 && action ==2)
-//		cout << "dbg: 4, 11, 2" << endl;
+	//if(current_state.get_x()==-3 && current_state.get_y()==1 && action ==0)
+	//	cout << "dbg: -3, 1, 0" << endl;
 	
-	Qstate_table.get_entry_Q(current_state[0], current_state[1], action, old_action_value);
+	Qstate_table.get_entry_Q(current_state, action, old_action_value);
 
-	Qstate_table.max_entry_Q(next_state[0], next_state[1], next_state_max_action, estimated_optimal_future_value); 
+	Qstate_table.max_entry_Q(next_state, next_state_max_action, estimated_optimal_future_value); 
 	
 	learned_value = reward + discount_factor * estimated_optimal_future_value; 
 
@@ -235,7 +244,7 @@ bool Agent::action_value_iteration_update(void)
 		", new_action_value =" << new_action_value << endl;
 */
 	//update new action value
-	Qstate_table.update_entry_Q(current_state[0], current_state[1], action, new_action_value);
+	Qstate_table.update_entry_Q(current_state, action, new_action_value);
 	
 	return true;
 }
@@ -251,8 +260,14 @@ bool Agent::termination_check(bool collision_state, bool goal_state)
 		return false;
 }
 
-bool Agent::update_state_after_action(int &state_x, int &state_y, char input_action)
+//bool Agent::update_state_after_action(int &state_x, int &state_y, char input_action)
+bool Agent::update_state_after_action(State &state, char input_action)
 {
+	int state_x;
+	int state_y;
+	state_x = state.get_x();
+	state_y = state.get_y();
+
 	switch(input_action)
 	{
 		case 0: //forward
@@ -272,20 +287,24 @@ bool Agent::update_state_after_action(int &state_x, int &state_y, char input_act
 			state_y = state_y - 1;
 			break;
 	}
+	state.set( state_x, state_y);
 	return true;
 }
 
 bool Agent::print_best_path(Environment env)
 {
-	int tmp_state[2];
+	//int tmp_state[2];
+	State tmp_state;
 	char tmp_action;
 	float tmp_action_value;
 	Qstate_entry tmp_entry;
 	bool tmp_collision_state;
 	bool tmp_goal_state;
 
-	tmp_state[0] = initial_state[0];
-	tmp_state[1] = initial_state[1];
+	//tmp_state[0] = initial_state[0];
+	//tmp_state[1] = initial_state[1];
+	tmp_state.set( initial_state.get_x(), initial_state.get_y() );
+
 	tmp_collision_state = false;
 	tmp_goal_state = false;
 	
@@ -297,14 +316,14 @@ bool Agent::print_best_path(Environment env)
 	cout << endl << "The best path:" << endl;
 	while( !tmp_collision_state && !tmp_goal_state )
 	{
-		Qstate_table.max_entry_Q(tmp_state[0], tmp_state[1], tmp_action, tmp_action_value);
-		tmp_entry.set(tmp_state[0], tmp_state[1], tmp_action, tmp_action_value);
+		Qstate_table.max_entry_Q(tmp_state, tmp_action, tmp_action_value);
+		tmp_entry.set(tmp_state, tmp_action, tmp_action_value);
 		tmp_entry.print();
-		update_state_after_action(tmp_state[0], tmp_state[1], tmp_action);
+		update_state_after_action(tmp_state, tmp_action);
 		
 		//check if collision happened or goal is reached
-		env.collision_check(tmp_state[0], tmp_state[1], tmp_collision_state);
-		env.goal_check(tmp_state[0], tmp_state[1], tmp_goal_state);
+		env.collision_check(tmp_state.get_x(), tmp_state.get_y(), tmp_collision_state);
+		env.goal_check(tmp_state.get_x(), tmp_state.get_y(), tmp_goal_state);
 
 	}
 	if(tmp_collision_state)

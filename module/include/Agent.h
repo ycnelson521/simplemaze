@@ -20,10 +20,15 @@
 
 class Agent {
 private:
-	int initial_state[2];
-	int current_state[2];
-	int next_state[2];
-	int goal_pos[2];
+	State initial_state;
+	State current_state;
+	State next_state;
+	State goal_pos;
+
+//	int initial_state[2];
+//	int current_state[2];
+//	int next_state[2];
+//	int goal_pos[2];
 
 	Qstate Qstate_table;
 
@@ -53,7 +58,8 @@ public:
 	bool action_value_iteration_update(void);
 	bool termination_check(bool collision_state, bool goal_state);
 	bool update_state_after_action(int &state_x, int &state_y, char input_action);
-	bool print_best_path(Environment env); 
+	bool update_state_after_action(State &state, char input_action);
+		bool print_best_path(Environment env); 
 	bool dumpQstate_table(void);
 };
 

@@ -13,19 +13,22 @@ Qstate_entry::~Qstate_entry(){
 
 void Qstate_entry::initialize(void)
 {
-	x = 0;
-	y = 0;
+	state.set(0, 0);
 	action = 0;
 	action_value = 0;
 }
 
-char Qstate_entry::get_x(void)
+int Qstate_entry::get_x(void)
 {
+	int x;
+	x = state.get_x();
 	return x;
 }
 
-char Qstate_entry::get_y(void)
+int Qstate_entry::get_y(void)
 {
+	int y;
+	y = state.get_y();
 	return y;
 }
 
@@ -47,14 +50,19 @@ bool Qstate_entry::update_action_value(float new_action_value)
 
 void Qstate_entry::print(void)
 {
-	cout << setw(2) <<"Q([" << (int)x << ", " << (int)y << "], " << (int)action << ")= " << setprecision(2) << action_value << endl;
+	cout << setw(2) <<"Q([" << state.get_x() << ", " << state.get_y() << "], " << (int)action << ")= " << setprecision(2) << action_value << endl;
 
 }
 
-bool Qstate_entry::set(char new_x, char new_y, char new_action, float new_action_value)
+bool Qstate_entry::set(State new_state, char new_action, float new_action_value)
 {
-	x = new_x;
-	y = new_y;
+	int new_x;
+	int new_y;
+
+	new_x = new_state.get_x();
+	new_y = new_state.get_y();
+	state.set( new_x, new_y);
+
 	action = new_action;
 	action_value = new_action_value;
 

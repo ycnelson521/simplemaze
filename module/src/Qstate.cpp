@@ -21,14 +21,14 @@ bool Qstate::initialize(void)
 	return true;	
 }
 
-bool Qstate::add_entry(int x, int y, char action, float action_value)
+bool Qstate::add_entry(State state, char action, float action_value)
 {
 	bool entry_exist = false;
 	vector<Qstate_entry>::iterator iter =Qstate_vector.begin();
 	for(iter; iter !=Qstate_vector.end(); ++iter)
 	{
-		entry_exist = (iter->get_x() == x) &&
-						(iter->get_y() == y) && 
+		entry_exist = (iter->get_x() == state.get_x() ) &&
+						(iter->get_y() == state.get_y() ) && 
 						(iter->get_action() == action);
 		if(entry_exist)
 		{
@@ -37,22 +37,22 @@ bool Qstate::add_entry(int x, int y, char action, float action_value)
 		}
 	}
 	Qstate_entry tmp_state_entry;
-	tmp_state_entry.set(x, y, action, action_value);
+	tmp_state_entry.set(state, action, action_value);
 	Qstate_vector.push_back(tmp_state_entry);
 
 	return true;
 }
 
 // return action value Q(s,a)
-bool Qstate::get_entry_Q(int x, int y, char action, float& action_value)
+bool Qstate::get_entry_Q(State state, char action, float& action_value)
 {
 
 	bool entry_exist = false;
 	vector<Qstate_entry>::iterator iter =Qstate_vector.begin();
 	for(iter; iter !=Qstate_vector.end(); ++iter)
 	{
-		entry_exist = (iter->get_x() == x) &&
-						(iter->get_y() == y) && 
+		entry_exist = (iter->get_x() == state.get_x()) &&
+						(iter->get_y() == state.get_y()) && 
 						(iter->get_action() == action);
 		if(entry_exist)
 		{
@@ -62,11 +62,9 @@ bool Qstate::get_entry_Q(int x, int y, char action, float& action_value)
 	}
 
 	return false;
-
-	return true;
 }
 
-bool Qstate::max_entry_Q(int x, int y, char& max_action, float& max_action_value) //return entry's max Q action and max Q
+bool Qstate::max_entry_Q(State state, char& max_action, float& max_action_value) //return entry's max Q action and max Q
 {
 	bool entry_exist = false;
 	bool max_entry_found = false;
@@ -77,8 +75,8 @@ bool Qstate::max_entry_Q(int x, int y, char& max_action, float& max_action_value
 	vector<Qstate_entry>::iterator iter =Qstate_vector.begin();
 	for(iter; iter !=Qstate_vector.end(); ++iter)
 	{
-		entry_exist = (iter->get_x() == x) &&
-						(iter->get_y() == y);
+		entry_exist = (iter->get_x() == state.get_x() ) &&
+						(iter->get_y() == state.get_y() );
 		if(entry_exist)
 		{
 			if( tmp_max_action_value < iter->get_action_value() )
@@ -99,14 +97,14 @@ bool Qstate::max_entry_Q(int x, int y, char& max_action, float& max_action_value
 	return false;
 }
 
-bool Qstate::update_entry_Q(int x, int y, char action, float action_value)
+bool Qstate::update_entry_Q(State state, char action, float action_value)
 {
 	bool entry_exist = false;
 	vector<Qstate_entry>::iterator iter =Qstate_vector.begin();
 	for(iter; iter !=Qstate_vector.end(); ++iter)
 	{
-		entry_exist = (iter->get_x() == x) &&
-						(iter->get_y() == y) && 
+		entry_exist = (iter->get_x() == state.get_x() ) &&
+						(iter->get_y() == state.get_y() ) && 
 						(iter->get_action() == action);
 		if(entry_exist)
 		{
@@ -119,14 +117,14 @@ bool Qstate::update_entry_Q(int x, int y, char action, float action_value)
 	
 }
 
-bool Qstate::check_entry(int x, int y, char action)
+bool Qstate::check_entry(State state, char action)
 {
 	bool entry_exist = false;
 	vector<Qstate_entry>::iterator iter =Qstate_vector.begin();
 	for(iter; iter !=Qstate_vector.end(); ++iter)
 	{
-		entry_exist = (iter->get_x() == x) &&
-						(iter->get_y() == y) && 
+		entry_exist = (iter->get_x() == state.get_x() ) &&
+						(iter->get_y() == state.get_y() ) && 
 						(iter->get_action() == action);
 		if(entry_exist)
 			return true;

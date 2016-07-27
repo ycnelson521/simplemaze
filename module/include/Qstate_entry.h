@@ -7,10 +7,12 @@
 #include <iomanip>
 #include <time.h>
 
+#include "State.h"
+
 class Qstate_entry {
 private:
-	char x;
-	char y;
+	
+	State state;
 	char action;
 	float action_value;
 
@@ -21,12 +23,12 @@ public:
 	void initialize(void);
 	void print(void);
 
-	char get_x(void);
-	char get_y(void);
+	int get_x(void);
+	int get_y(void);
 	char get_action(void);
 	float get_action_value(void);
 	bool update_action_value(float new_action_value);
-	bool set(char new_x, char new_y, char new_action, float new_action_value);
+	bool set(State new_state, char new_action, float new_action_value);
 	
 	
 };
